@@ -1,5 +1,7 @@
 package Core;
 
+import org.slf4j.Logger;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -9,6 +11,8 @@ import java.util.Properties;
 public class Config {
     private static Properties cfg;
     private static final File cfgFile = new File("cfg.properties");
+    private static final Logger logger = Log.Config.getLogger();
+
 
     ////////////////////////////////////////////////////////////////////////////
     //* Loading keys and values in specified config file in properties Obj   *//
@@ -25,6 +29,7 @@ public class Config {
     ////////////////////////////////////////////////////////////////////////////
     public static String getValue(String key) throws IOException {
         loadConfig();
+        //logger.info("Retrieved Value for Key: " + key);
         return cfg.getProperty(key);
     }
 
@@ -36,5 +41,7 @@ public class Config {
         FileWriter writer = new FileWriter(cfgFile);
         cfg.store(writer, key + " added");
         writer.close();
+        logger.info("Changed value of " + key + " to: " + value);
+
     }
 }

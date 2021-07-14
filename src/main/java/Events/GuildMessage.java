@@ -31,7 +31,7 @@ public class GuildMessage extends ListenerAdapter {
         ////////////////////////////////////////////////////////////////////////////
         //* command to set variables in the cfg                                  *//
         ////////////////////////////////////////////////////////////////////////////
-        if(event.getChannel().getId().equalsIgnoreCase("864137167613198356") && event.getMessage().getContentRaw().startsWith("!cfg"))    {
+        else if(event.getChannel().getId().equalsIgnoreCase("864137167613198356") && event.getMessage().getContentRaw().startsWith("!cfg"))    {
             String[] cnt = event.getMessage().getContentRaw().split(" ");
             event.getChannel().sendMessage("Value of " + cnt[1] + " changed to: " + cnt[2] + " in Config.").queue();
             try {
@@ -39,6 +39,10 @@ public class GuildMessage extends ListenerAdapter {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        else if(event.getMessage().getContentRaw().startsWith("!log"))  {
+            Log.LogFile.getLogFile(event.getChannel());
         }
     }
 }
