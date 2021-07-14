@@ -19,11 +19,11 @@ public class APICall {
         //* Setting the bots status                                              *//
         //* And writing a status message in #talk                                *//
         ////////////////////////////////////////////////////////////////////////////
-        jda.getTextChannelById("864137167613198356").sendMessage("I started to look for changes for 5 minutes or until i find a change!").queue();
+        //jda.getTextChannelById("864137167613198356").sendMessage("I started to look for changes for 5 minutes or until i find a change!").queue();
         jda.getPresence().setPresence(OnlineStatus.ONLINE, Activity.playing("LOOKING FOR CHANGES!"));
 
 
-        for(int i = 0; i < 1500; i++)   {
+        for(int i = 0; i < 4500; i++)   {
 
             ////////////////////////////////////////////////////////////////////////////
             //* Dissecting the JSON                                                  *//
@@ -44,7 +44,7 @@ public class APICall {
 
                 Config.putValue("timeStamp", APITimeStamp);
                 jda.getTextChannelById("864186142013390848").sendMessage(currentTime + ":   timeStamp changed. CONTRACT: " + APIObject.getString("contractAddress") + " TokenName: " + APIObject.getString("tokenName")).queue();
-                jda.getTextChannelById("864137167613198356").sendMessage("I have stopped looking for changes. Do !start to start me again!").queue();
+                //jda.getTextChannelById("864137167613198356").sendMessage("I have stopped looking for changes. Do !start to start me again!").queue();
                 jda.getPresence().setPresence(OnlineStatus.DO_NOT_DISTURB, Activity.playing("!START TO START ME!"));
                 break;
             }

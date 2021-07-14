@@ -1,8 +1,6 @@
 package Core;
 
 import net.dv8tion.jda.api.*;
-import net.dv8tion.jda.api.entities.Activity;
-import org.slf4j.Logger;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -40,9 +38,6 @@ public class Main   {
                 .addEventListeners(
                         new Events.GuildMessage())
                 .build().awaitReady();
-
-        Logger logger = Log.Discord.getLogger();
-        logger.info("Logged in as: " + jda.getSelfUser().getName());
 
         API.setAPI(jda);
         API.setPres(jda.getPresence());
