@@ -7,8 +7,11 @@ import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.net.MalformedURLException;
 
 public class Main   {
+    static Logger logger = Log.Discord.getLogger();
+
     ////////////////////////////////////////////////////////////////////////////
     //* Starting point of the Program                                        *//
     //* Calling initialize and startBot                                      *//
@@ -16,7 +19,12 @@ public class Main   {
     public static void main(String[] args) throws IllegalArgumentException, IOException, LoginException, InterruptedException {
         initialize();
         startBot();
-        APICall.APICall();
+        try {
+            APICall.APICall();
+        } catch (MalformedURLException e)   {
+            logger.error("URL fehlt in CFG. add url = ... in cfg.properties");
+            System.exit(69);
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -40,7 +48,6 @@ public class Main   {
                         new Events.GuildMessage())
                 .build().awaitReady();
 
-        Logger logger = Log.Discord.getLogger();
         logger.info("Logged in as: " + jda.getSelfUser().getName());
 
         API.setAPI(jda);
