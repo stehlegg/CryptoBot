@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Activity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -13,13 +14,14 @@ import java.util.Calendar;
 
 public class APICall {
     static JDA jda = API.getApi();
+    static Logger logger = Log.Discord.getLogger();
     public static void APICall() throws IOException, InterruptedException {
 
         ////////////////////////////////////////////////////////////////////////////
         //* Setting the bots status                                              *//
         //* And writing a status message in #talk                                *//
         ////////////////////////////////////////////////////////////////////////////
-        //jda.getTextChannelById("864137167613198356").sendMessage("I started to look for changes for 5 minutes or until i find a change!").queue();
+        jda.getTextChannelById("864137167613198356").sendMessage("I started to look for changes for 5 minutes or until i find a change!").queue();
         jda.getPresence().setPresence(OnlineStatus.ONLINE, Activity.playing("LOOKING FOR CHANGES!"));
 
 
@@ -28,6 +30,8 @@ public class APICall {
         ////////////////////////////////////////////////////////////////////////////
         for(int i = 0; i < 4500; i++)   {
             Config.loadConfig();
+            jda.getPresence().setPresence(OnlineStatus.ONLINE, Activity.playing("LOOKING FOR CHANGES!"));
+
 
             ////////////////////////////////////////////////////////////////////////////
             //* Dissecting the JSON                                                  *//
@@ -52,12 +56,23 @@ public class APICall {
             else if(!Config.getValue("timeStamp").equalsIgnoreCase(APITimeStamp))   {
                 String currentTime = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
                 Config.putValue("timeStamp", APITimeStamp);
-                //jda.getTextChannelById("864186142013390848").sendMessage(currentTime + ":   timeStamp changed. CONTRACT: " + APIObject.getString("contractAddress") + " TokenName: " + APIObject.getString("tokenName")).queue();
-                //jda.getTextChannelById("864137167613198356").sendMessage("I have stopped looking for changes. Do !start to start me again!").queue();
+                jda.getTextChannelById("864186142013390848").sendMessage(currentTime + ":   timeStamp changed. CONTRACT: " + APIObject.getString("contractAddress") + " TokenName: " + APIObject.getString("tokenName")).queue();
+                logger.info(currentTime + ":   timeStamp changed. CONTRACT: " + APIObject.getString("contractAddress") + " TokenName: " + APIObject.getString("tokenName"));
+                jda.getTextChannelById("864137167613198356").sendMessage("I have stopped looking for changes. Do !start to start me again!").queue();
                 jda.getPresence().setPresence(OnlineStatus.DO_NOT_DISTURB, Activity.playing("!START TO START ME!"));
                 break;
             }
-            Thread.sleep(200);
+
+            ////////////////////////////////////////////////////////////////////////////
+            //* catching interruption when discord disconnects for whatever reason   *//
+            ////////////////////////////////////////////////////////////////////////////
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e)    {
+                logger.error("Sleep Interrupted by Disconnect?");
+                jda.getPresence().setPresence(OnlineStatus.DO_NOT_DISTURB, Activity.playing("!START TO START ME!"));
+                break;
+            }
         }
     }
 }
