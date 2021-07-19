@@ -17,9 +17,6 @@ public class APICall {
     static JDA jda = API.getApi();
     static Logger logger = Log.Discord.getLogger();
 
-
-
-
     public static void scrape() throws IOException, InterruptedException {
 
         ////////////////////////////////////////////////////////////////////////////
@@ -34,7 +31,7 @@ public class APICall {
         //* And writing a status message in #talk                                *//
         ////////////////////////////////////////////////////////////////////////////
         assert talkChannel != null;
-        talkChannel.sendMessage("I started to look for changes for 5 minutes or until i find a change!").queue();
+        talkChannel.sendMessage("I started to look for changes for 15 minutes or until i find a change!").queue();
         jda.getPresence().setPresence(OnlineStatus.ONLINE, Activity.playing("LOOKING FOR CHANGES!"));
 
         ////////////////////////////////////////////////////////////////////////////
