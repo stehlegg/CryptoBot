@@ -1,7 +1,6 @@
 package Core;
 
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.managers.Presence;
 
 public class API {
 
@@ -17,12 +16,4 @@ public class API {
         return api;
     }
 
-    ////////////////////////////////////////////////////////////////////////////
-    //* Discord Presence Object                                              *//
-    //* Getter and Setter for Discord Presence                               *//
-    ////////////////////////////////////////////////////////////////////////////
-    private static Presence pres;
-    public static void setPres(Presence pc) {
-        pres = pc;
-    }
 }
