@@ -4,10 +4,12 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 
+import javax.xml.soap.Text;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,23 +17,32 @@ import java.util.Calendar;
 public class APICall {
     static JDA jda = API.getApi();
     static Logger logger = Log.Discord.getLogger();
+
+
+
+
     public static void APICall() throws IOException, InterruptedException {
+
+        ////////////////////////////////////////////////////////////////////////////
+        //* Added Implementation to get                                          *//
+        //* respective TextChannels to write Messages in from CFG                *//
+        ////////////////////////////////////////////////////////////////////////////
+        TextChannel talkChannel = jda.getTextChannelById(Config.getValue("talkChannel"));
+        TextChannel notifChannel = jda.getTextChannelById(Config.getValue("notifChannel"));
 
         ////////////////////////////////////////////////////////////////////////////
         //* Setting the bots status                                              *//
         //* And writing a status message in #talk                                *//
         ////////////////////////////////////////////////////////////////////////////
-        jda.getTextChannelById("864137167613198356").sendMessage("I started to look for changes for 5 minutes or until i find a change!").queue();
+        talkChannel.sendMessage("I started to look for changes for 5 minutes or until i find a change!").queue();
         jda.getPresence().setPresence(OnlineStatus.ONLINE, Activity.playing("LOOKING FOR CHANGES!"));
 
-
         ////////////////////////////////////////////////////////////////////////////
-        //* Loop running 4500 times, every 200ms (15mins, 5 times a sec          *//
+        //* Loop running 4500 times, every 200ms (15mins, 5 times a sec)         *//
         ////////////////////////////////////////////////////////////////////////////
         for(int i = 0; i < 4500; i++)   {
             Config.loadConfig();
             jda.getPresence().setPresence(OnlineStatus.ONLINE, Activity.playing("LOOKING FOR CHANGES!"));
-
 
             ////////////////////////////////////////////////////////////////////////////
             //* Dissecting the JSON                                                  *//
@@ -56,9 +67,9 @@ public class APICall {
             else if(!Config.getValue("timeStamp").equalsIgnoreCase(APITimeStamp))   {
                 String currentTime = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
                 Config.putValue("timeStamp", APITimeStamp);
-                jda.getTextChannelById("864186142013390848").sendMessage(currentTime + ":   timeStamp changed. CONTRACT: " + APIObject.getString("contractAddress") + " TokenName: " + APIObject.getString("tokenName")).queue();
-                logger.info(currentTime + ":   timeStamp changed. CONTRACT: " + APIObject.getString("contractAddress") + " TokenName: " + APIObject.getString("tokenName"));
-                jda.getTextChannelById("864137167613198356").sendMessage("I have stopped looking for changes. Do !start to start me again!").queue();
+                notifChannel.sendMessage(currentTime + ":   timeStamp changed. CONTRACT: " + APIObject.getString("contractAddress") + " TokenName: " + APIObject.getString("tokenName")).queue();
+                logger.info(":   timeStamp changed. CONTRACT: " + APIObject.getString("contractAddress") + " TokenName: " + APIObject.getString("tokenName"));
+                talkChannel.sendMessage("I have stopped looking for changes. Do !start to start me again!").queue();
                 jda.getPresence().setPresence(OnlineStatus.DO_NOT_DISTURB, Activity.playing("!START TO START ME!"));
                 break;
             }

@@ -25,8 +25,4 @@ public class API {
     public static void setPres(Presence pc) {
         pres = pc;
     }
-    public static Presence getPres()  {
-        return pres;
-    }
-
 }
