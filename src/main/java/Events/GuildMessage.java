@@ -20,10 +20,8 @@ public class GuildMessage extends ListenerAdapter {
         ////////////////////////////////////////////////////////////////////////////
         if(event.getChannel().getId().equalsIgnoreCase("864137167613198356") && event.getMessage().getContentRaw().startsWith("!start"))    {
             try {
-                APICall.APICall();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+                APICall.Scrape();
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         }

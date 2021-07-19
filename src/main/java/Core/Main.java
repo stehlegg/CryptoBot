@@ -20,7 +20,7 @@ public class Main   {
         initialize();
         startBot();
         try {
-            APICall.APICall();
+            APICall.Scrape();
         } catch (MalformedURLException e)   {
             logger.error("URL fehlt in CFG. add url = ... in cfg.properties");
             System.exit(69);

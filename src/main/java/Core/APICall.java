@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 
-import javax.xml.soap.Text;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,7 +20,7 @@ public class APICall {
 
 
 
-    public static void APICall() throws IOException, InterruptedException {
+    public static void Scrape() throws IOException, InterruptedException {
 
         ////////////////////////////////////////////////////////////////////////////
         //* Added Implementation to get                                          *//
@@ -34,6 +33,7 @@ public class APICall {
         //* Setting the bots status                                              *//
         //* And writing a status message in #talk                                *//
         ////////////////////////////////////////////////////////////////////////////
+        assert talkChannel != null;
         talkChannel.sendMessage("I started to look for changes for 5 minutes or until i find a change!").queue();
         jda.getPresence().setPresence(OnlineStatus.ONLINE, Activity.playing("LOOKING FOR CHANGES!"));
 
@@ -67,6 +67,7 @@ public class APICall {
             else if(!Config.getValue("timeStamp").equalsIgnoreCase(APITimeStamp))   {
                 String currentTime = new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime());
                 Config.putValue("timeStamp", APITimeStamp);
+                assert notifChannel != null;
                 notifChannel.sendMessage(currentTime + ":   timeStamp changed. CONTRACT: " + APIObject.getString("contractAddress") + " TokenName: " + APIObject.getString("tokenName")).queue();
                 logger.info(":   timeStamp changed. CONTRACT: " + APIObject.getString("contractAddress") + " TokenName: " + APIObject.getString("tokenName"));
                 talkChannel.sendMessage("I have stopped looking for changes. Do !start to start me again!").queue();
