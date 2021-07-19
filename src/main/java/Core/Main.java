@@ -51,6 +51,5 @@ public class Main   {
         logger.info("Logged in as: " + jda.getSelfUser().getName());
 
         API.setAPI(jda);
-        API.setPres(jda.getPresence());
     }
 }
