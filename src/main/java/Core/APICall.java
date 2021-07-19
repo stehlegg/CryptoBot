@@ -20,7 +20,7 @@ public class APICall {
 
 
 
-    public static void Scrape() throws IOException, InterruptedException {
+    public static void scrape() throws IOException, InterruptedException {
 
         ////////////////////////////////////////////////////////////////////////////
         //* Added Implementation to get                                          *//
