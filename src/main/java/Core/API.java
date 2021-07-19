@@ -15,5 +15,4 @@ public class API {
     public static JDA getApi()  {
         return api;
     }
-
 }
