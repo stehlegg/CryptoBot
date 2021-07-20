@@ -39,7 +39,8 @@ public class APICall {
         ////////////////////////////////////////////////////////////////////////////
         for(int i = 0; i < 4500; i++)   {
             Config.loadConfig();
-            jda.getPresence().setPresence(OnlineStatus.ONLINE, Activity.playing("LOOKING FOR CHANGES!"));
+            if(!jda.getPresence().getStatus().toString().equalsIgnoreCase("online"))
+                jda.getPresence().setPresence(OnlineStatus.ONLINE, Activity.playing("LOOKING FOR CHANGES!"));
 
             ////////////////////////////////////////////////////////////////////////////
             //* Dissecting the JSON                                                  *//
@@ -67,8 +68,13 @@ public class APICall {
                 assert notifChannel != null;
                 notifChannel.sendMessage(currentTime + ":   timeStamp changed. CONTRACT: " + APIObject.getString("contractAddress") + " TokenName: " + APIObject.getString("tokenName")).queue();
                 logger.info(":   timeStamp changed. CONTRACT: " + APIObject.getString("contractAddress") + " TokenName: " + APIObject.getString("tokenName"));
+                for(int j = 0; j < 10; j++) {
+                    System.out.println(currentTime + ":   timeStamp changed. CONTRACT: " + APIObject.getString("contractAddress") + " TokenName: " + APIObject.getString("tokenName"));
+                    logger.warn(APIObject.getString("contractAddress"));
+                }
                 talkChannel.sendMessage("I have stopped looking for changes. Do !start to start me again!").queue();
-                jda.getPresence().setPresence(OnlineStatus.DO_NOT_DISTURB, Activity.playing("!START TO START ME!"));
+                if(!jda.getPresence().getStatus().toString().equalsIgnoreCase("do_not_disturb"))
+                    jda.getPresence().setPresence(OnlineStatus.DO_NOT_DISTURB, Activity.playing("!START TO START ME!"));
                 break;
             }
 
@@ -79,7 +85,8 @@ public class APICall {
                 Thread.sleep(200);
             } catch (InterruptedException e)    {
                 logger.error("Sleep Interrupted by Disconnect?");
-                jda.getPresence().setPresence(OnlineStatus.DO_NOT_DISTURB, Activity.playing("!START TO START ME!"));
+                if(!jda.getPresence().getStatus().toString().equalsIgnoreCase("do_not_disturb"))
+                    jda.getPresence().setPresence(OnlineStatus.DO_NOT_DISTURB, Activity.playing("!START TO START ME!"));
                 break;
             }
         }
